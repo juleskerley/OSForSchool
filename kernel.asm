@@ -1,14 +1,17 @@
 GLOBAL k_printstr
 
+vgaStart    DWORD PTR 0xB8000 H
 k_printstr:
     push ebp
     mov ebp, esp
     pushf
-    push esi ; string pointer
+    push esi ; string mem location
+    push edi ; vga mem location
     push eax ; offset
     push ebx ; row
     push ecx ; column
 
+    mov edi, vgaStart
     mov esi, [ebp+12]
     ; I think it's +12 because the string is the *first* thing into the function
     mov ebx, [ebp+8]
@@ -16,9 +19,9 @@ k_printstr:
 
 
     loop:
-        cmp [STRING], 00 ; string is 0 bytes big left
+        cmp [esi], 0 ; string is 0 bytes big left
         je loop_end
-        cmp [STRING], [MAXMEMLOCATIONINVIDEO]
+        cmp esi+eax, vgaStart+4000 ; 4000 = 25*80*2
         jg loop_end
         movsb ; gets the character and puts it into mem for video and incs
         mov WHITETEXTBLUEBACKGROUND, [CURMEMLOCATION]
