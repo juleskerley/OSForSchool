@@ -37,4 +37,4 @@ debug: install
 clean:
 	rm *.o *.exe
 	rm boot1 boot2
-        rm *.img
+	rm *.img
