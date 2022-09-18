@@ -1,16 +1,17 @@
-all: install
+all: boot2 boot1
 
-install: boot1 boot2
+image: all
 	dd if=/dev/zero of=a.img bs=512 count=2880
 	/sbin/mkdosfs a.img
 	dd if=boot1 of=a.img bs=1 count=512 conv=notrunc
 	mcopy -o boot2 a:BOOT2
 
+
+boot1: kernel.exe
+	nasm -DENTRY=0x$(shell nm kernel.exe | grep main | cut -d " " -f 1) boot1.asm
+
 boot2: kernel.exe
 	objcopy -j .text* -j .data* -j .rodata* -S -O binary kernel.exe boot2
-
-boot1: kernel.exe boot1.asm
-	nasm -DENTRY=0x$(shell nm kernel.exe | grep main | cut -d " " -f 1) boot1.asm
 
 kernel.exe: kernel_c.o kernel_asm.o buddy_c.o convert_c.o
 	ld -g -melf_i386 -Ttext 0x10000 -e main -o kernel.exe kernel_c.o kernel_asm.o convert_c.o buddy_c.o
@@ -27,10 +28,10 @@ buddy_c.o:
 convert_c.o:
 	gcc -g -m32 -fno-stack-protector -c -o convert_c.o convert.c
 
-run: install
+run: image
 	qemu-system-i386 -drive format=raw,file=a.img,if=floppy
 
-debug: install
+debug: image
 	qemu-system-i386 -S -s -drive format=raw,file=a.img,if=floppy &
 	ddd --debugger 'gdb -ex "target remote localhost:1234" -ex "break main" -ex "continue"' kernel.exe
 
