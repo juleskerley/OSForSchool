@@ -22,7 +22,7 @@ k_printstr:
         cmp DWORD edi, 0xB8FA0 ;   0xB000+FA0 = 4000 = 25*80*2
         jg loop_end
         movsb ; gets the character and puts it into mem for video and incs
-        mov BYTE [edi], 31h
+        mov BYTE [edi], 31
         inc edi
         jmp loop
     loop_end:
