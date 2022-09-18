@@ -31,9 +31,10 @@ run: install
 	qemu-system-i386 -drive format=raw,file=a.img,if=floppy
 
 debug: install
-	qemu-system-i386 -S -s -drive format=raw,file=a.img,if=floppy
-	ddd --debugger 'gdb -ex "target remote localhost:1234" -ex "break main" -ex "continue"' kernel
+	qemu-system-i386 -S -s -drive format=raw,file=a.img,if=floppy &
+	ddd --debugger 'gdb -ex "target remote localhost:1234" -ex "break main" -ex "continue"' kernel.exe
 
 clean:
 	rm *.o *.exe
 	rm boot1 boot2
+        rm *.img
