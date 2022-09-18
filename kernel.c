@@ -4,7 +4,9 @@ void k_printstr(char *string, int row, int col);
 
 
 int main(){
-    const char *string = "hello world";
-    k_printstr(string, 11, 17);
+    while(1){
+    char *string = "hello world";
+    k_printstr(string, 0, 0);
+    }
     return 0;
 }
