@@ -19,6 +19,7 @@ void k_clearscr(){
 }
 
 void print_border(int start_row, int start_col, int end_row, int end_col){
+/*
     for (int i = 0; i < 25; i++){
         for (int j = 0; j < 80; j++){
             if (i == 0 && j == 0 || i == 24 && j == 0 || i == 0 && j == 79 || i == 24 && j == 79)
@@ -28,6 +29,24 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
             else if (j == 0 || j == 79)
                 k_printstr("|", i, j);
         }
+    }
+*/
+    // Required for the usage; also prevents end + from being overwritten
+    end_row--;
+    end_col--;
+
+    k_printstr("+", start_row, start_col);
+    k_printstr("+", start_row, end_col);
+    k_printstr("+", end_row, start_col);
+    k_printstr("+", end_row, end_col);
+
+    for (int i = start_row+1; i < end_row; i++){
+        k_printstr("|", i, start_col);
+        k_printstr("|", i, end_col);
+    }
+    for (int i = start_col+1; i < end_col; i++){
+        k_printstr("-", start_row, i);
+        k_printstr("-", end_row, i);
     }
 }
 
