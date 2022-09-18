@@ -1,6 +1,6 @@
 GLOBAL k_printstr
 
-vgaStart    DWORD PTR 0xB8000h
+vgaStart    BYTE 0xB8000h
 k_printstr:
     push ebp
     mov ebp, esp
@@ -17,7 +17,9 @@ k_printstr:
     mov ebx, [ebp+8]
     mov ecx, [ebp+4]
 
-   
+    imul eax, ebx, 80
+    add  eax, ecx
+    mul 2 ; Because I think the destination is eax
 
     loop:
         cmp BYTE [esi], 0 ; string is 0 bytes big left
@@ -25,13 +27,14 @@ k_printstr:
         cmp [esi+eax], [vgaStart+4000] ; 4000 = 25*80*2
         jg loop_end
         movsb ; gets the character and puts it into mem for video and incs
-        mov 31h, [edi]
+        mov BYTE 31h, [edi]
         inc edi
         jmp loop
     loop_end:
         pop ecx
         pop ebx
         pop eax
+        pop edi
         pop esi
         popf
         pop ebp
