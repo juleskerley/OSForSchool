@@ -1,6 +1,6 @@
 all: boot2 boot1
 
-image: all
+install: all
 	dd if=/dev/zero of=a.img bs=512 count=2880
 	/sbin/mkdosfs a.img
 	dd if=boot1 of=a.img bs=1 count=512 conv=notrunc
@@ -28,10 +28,10 @@ buddy_c.o:
 convert_c.o:
 	gcc -g -m32 -fno-stack-protector -c -o convert_c.o convert.c
 
-run: image
+run: install
 	qemu-system-i386 -drive format=raw,file=a.img,if=floppy
 
-debug: image
+debug: install
 	qemu-system-i386 -S -s -drive format=raw,file=a.img,if=floppy &
 	ddd --debugger 'gdb -ex "target remote localhost:1234" -ex "break main" -ex "continue"' kernel.exe
 
