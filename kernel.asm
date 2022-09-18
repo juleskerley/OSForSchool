@@ -7,25 +7,21 @@ k_printstr:
     push esi ; string mem location
     push edi ; vga mem location
     push eax ; offset
-    push ebx ; row
-    push ecx ; column
 
-    mov edi, 0xB8000
-    mov esi, [ebp+12]
+    mov edi, 0xB8000h
+    mov esi, [ebp+8]
     ; I think it's +12 because the string is the *first* thing into the function
-    mov ebx, [ebp+8]
-    mov ecx, [ebp+4]
 
-    imul eax, ebx, 80 ; maybe change it so that it is [ebp+8]?
-    add  eax, ecx ; same here
+    imul eax, [ebp+12], 80 ; Using ebp to slot in row
+    add  eax, [ebp+16] ; same here for columns
     imul eax, eax, 2 ; I think there is a better way but I forgot...
 
-    add esi, eax
+    add edx, eax ; adding offset to starting location
 
     loop:
         cmp BYTE [esi], 0 ; string is 0 bytes big left
         je loop_end
-        cmp esi, 0xB8FA0 ;   0xB000+FA0 = 4000 = 25*80*2
+        cmp edx, 0xB8FA0 ;   0xB000+FA0 = 4000 = 25*80*2
         jg loop_end
         movsb ; gets the character and puts it into mem for video and incs
         mov BYTE [edi], 31h
