@@ -3,6 +3,9 @@ void k_clearscr();
 void run_test();
 void print_border(int start_row, int start_col, int end_row, int end_col);
 
+/* Avery Kerley
+   This program simply runs creates clears the screen, sets a border, and
+   does the designated tests */
 
 int main(){
     k_clearscr();
