@@ -1,7 +1,15 @@
+#include <sddint.h>
+
+void run_test();
+
 void k_printstr(char *string, int row, int col);
 void k_clearscr();
-void run_test();
 void print_border(int start_row, int start_col, int end_row, int end_col);
+
+void enqueue(pcbq_t *q, pcb_t *pcb);
+pcb_t *dequeue(pcbq_t *q);
+
+int create_process(uint32_t code_address);
 
 /* Avery Kerley
    This program simply runs creates clears the screen, sets a border, and
@@ -9,8 +17,7 @@ void print_border(int start_row, int start_col, int end_row, int end_col);
 
 int main(){
     k_clearscr();
-    print_border(0,0,25,80); //known limits of vga
-    run_test();
+    k_printstr("Running Processes", 0, 0);
     while(1){} // This keeps the screen from flickering
     return 0;
 }
