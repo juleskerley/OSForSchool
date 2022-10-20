@@ -59,11 +59,11 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
     k_printstr("+", end_row, start_col);
     k_printstr("+", end_row, end_col);
 
-    for (int i = start_row+1; i < end_row; i++){
+    for (int i = start_row; i < end_row; i++){
         k_printstr("|", i, start_col);
         k_printstr("|", i, end_col);
     }
-    for (int i = start_col+1; i < end_col; i++){
+    for (int i = start_col; i < end_col; i++){
         k_printstr("-", start_row, i);
         k_printstr("-", end_row, i);
     }
