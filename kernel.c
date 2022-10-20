@@ -24,7 +24,7 @@ typedef struct {
 } pcb_t;
 // Queue for above node
 typedef struct {
-    pcb_t *start;
+    pcb_t *front;
     pcb_t *end;
 } pcbq_t;
 // Declaration
@@ -69,15 +69,15 @@ void enqueue(pcbq_t *q, pcb_t *pcb){
 }
 
 pcb_t *dequeue(pcbq_t *q){
-    pcb_t temp;
+    pcb_t *temp;
     temp = q->front;
     if (q->front == q->end){
         q->front = 0;
         q->end = 0;
         return temp;
     }
-    q->front->prev = pcbq_t->front;
-    pcbq_t->front->next = 0;
+    q->front->prev = q->front;
+    q->front->next = 0;
     return temp;
 }
 
@@ -135,9 +135,11 @@ int create_process(uint32_t code_address){
     }
 
     pid++;
+
     pcb_t *pcb = kmalloc(sizeof(pcb_t));
-    node->esp = st;
-    node->pid = pid;
+    pcb->esp = st;
+    pcb->pid = pid;
+    enqueue(&readyQueue,pcb);    
 
     return 0;
 }
