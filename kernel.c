@@ -24,8 +24,8 @@ void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
 
 
-void enqueue(pcbq_t *q, pcb_t *pcb);
-pcb_t *dequeue(pcbq_t *q);
+void enqueue(struct pcbq_t *q, struct pcb_t *pcb);
+pcb_t *dequeue(struct pcbq_t *q);
 
 int create_process(uint32_t code_address);
 
