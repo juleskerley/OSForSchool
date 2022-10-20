@@ -114,13 +114,13 @@ void p1(){
     uint32_t num = 0;
     k_printstr("value: ", 12, 11);
     while (1){
-    	char* numStr = "";
+    	char numStr[5] = "";
         convert_num(num, numStr);
 	k_printstr(numStr, 12, 18);
 	num++;
 	if(num > 1000){
 	    num = 0;
-	    //k_printstr("", 12, 18); // To get rid of the extra numbers
+	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
         }
     }
 }
@@ -131,12 +131,13 @@ void p2(){
     uint32_t num = 0;
     k_printstr("value: ", 17, 11);
     while (1){
-    	char* numStr = convert_num(num);
+    	char numStr[5] = "";
+        convert_num(num, numStr);
 	k_printstr(numStr, 17, 18);
 	num++;
 	if(num > 1000){
 	    num = 0;
-	    //k_printstr("", 17, 18); // To get rid of the extra numbers
+	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
         }
     }
 }
