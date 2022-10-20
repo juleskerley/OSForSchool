@@ -6,6 +6,7 @@
 
 // Dr. Roger's code
 void run_test();
+void buddy_init();
 
 // prototypes
 void k_printstr(char *string, int row, int col);
@@ -29,7 +30,7 @@ struct pcbq_t {
 }
 
 int main(){
-    buddy_init()
+    buddy_init();
     k_clearscr();
     k_printstr("Running Processes", 0, 0);
     while(1){} // This keeps the screen from flickering
