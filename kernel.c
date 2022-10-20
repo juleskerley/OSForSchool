@@ -45,8 +45,8 @@ int main(){
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes", 1, 1);
-    p1()
-    p2()
+    p1();
+    p2();
     create_process(0);
     while(1){} // This keeps the screen from flickering
     return 0;
