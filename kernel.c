@@ -9,6 +9,7 @@
 // Node; process control block
 struct pcb_t {
 
+
 };
 // Queue
 struct pcbq_t {
@@ -33,7 +34,8 @@ int create_process(uint32_t code_address);
 int main(){
     buddy_init();
     k_clearscr();
-    k_printstr("Running Processes", 0, 0);
+    print_border(1,1,80,80);
+    k_printstr("Running Processes", 2, 2);
     while(1){} // This keeps the screen from flickering
     return 0;
 }
@@ -87,5 +89,5 @@ int create_process(uint32_t code_address){
     st--;
     uint32_t dispatch_leave;
     st = dispatch_leave;
-
+    return 0;
 }
