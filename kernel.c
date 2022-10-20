@@ -107,15 +107,18 @@ int create_process(uint32_t code_address){
 }
 
 void p1(){
-    print_border(11,11,14,36);
-
-
-
-
-
-
-
-
+    print_border(10, 10, 13, 35);
+    k_printstr("Process 1 running...", 11, 11);
+    int num = 0;
+    k_printstr("value: ", 12, 11);
+    while (1){
+    	char* numStr = conver_num(num);
+	k_printstr(numStr, 12, 18);
+	num++;
+	if(num > 1000)
+	    num = 0;
+	    k_printstr("   ", 12, 19); // To get rid of the extra numbers
+    }
 }
 
 void p2(){
