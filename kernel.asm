@@ -1,4 +1,6 @@
 GLOBAL k_printstr
+GLOBAL curProc
+EXTERN dequeue
 
 k_printstr:
     push ebp
@@ -32,3 +34,13 @@ k_printstr:
         popf
         pop ebp
         ret
+
+go:
+
+go_rest:
+
+dispatch:
+
+dispatch_leave:
+
+yield:
