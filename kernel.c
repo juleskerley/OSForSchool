@@ -4,15 +4,23 @@
 
 #include <stdint.h>
 
+// global variables
+uint32_t pid=0;
+
 // structs
 
 // Node; process control block
 struct pcb_t {
+    // Data
 
-
+    struct pcb_t *next;
 };
-// Queue
+// Queue for above node
 struct pcbq_t {
+    struct pcb_t *start;
+    struct pcb_t *rear;
+
+
 };
 
 // Dr. Roger's code
@@ -67,6 +75,8 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
 
 int create_process(uint32_t code_address){
     uint32_t *stackptr = kmalloc(1024);
+    if (stackptr == nullptr)
+        return -1;
 
     uint32_t *st = stackptr+1024;
 
@@ -75,14 +85,22 @@ int create_process(uint32_t code_address){
     st = eflags; // Setting current mem location to eflags (0)
 
     *st--;
-    uint32_t cs;
+    uint32_t cs = 0;
     st = cs;
 
-    st--;
-    st = code_address;
+    *st--;
+    uint32_t code_address = 0;
+    st = cs;
 
-    st--;
-    uint32_t dispatch_leave;
+    *st--;
+    uint32_t dispatch_leave = 0;
     st = dispatch_leave;
+
+    for (int i = 0; i < 8; i++){
+        *st--;
+        st = 0;
+    }
+
+
     return 0;
 }
