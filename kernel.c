@@ -43,14 +43,17 @@ void print_border(int start_row, int start_col, int end_row, int end_col);
 int create_process(uint32_t code_address);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
+void go(pcbq_ *q);
+
 
 int main(){
     buddy_init();
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes", 1, 1);
-    p1();
-    p2();
+    go(&readyQueue);
+    //p1();
+    //p2();
     create_process(0);
     while(1){} // This keeps the screen from flickering
     return 0;
