@@ -5,6 +5,7 @@ GLOBAL go
 EXTERN dequeue
 
 GLOBAL curProc ; pointer to current running process
+curProc DW 0
 
 k_printstr:
     push ebp
@@ -43,14 +44,18 @@ go:
     push ebp
     mov ebp, esp
     pushf
+    push eax
     ;pushes the point on stack with the queue back onto the stack so the call works 
-    push [ebp+8]
+    push DWORD [ebp+8]
     call dequeue
+    add 4, esp ; cleans the stack of that pushed address
     ; putting the return into the global variable
-    mov curProc, eax ; call, I think, puts the return into eax
-    jmp go_rest
+    mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
+    ; don't need to put a jmp, it'll fall to go_rest
 
 go_rest:
+    ; so future me, this isn't correct, but accessing the struct might be like
+    mov [curProc+8], esp ;like this, figure it out pls
 
 dispatch:
     jmp yield
