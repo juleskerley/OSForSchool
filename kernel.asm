@@ -1,6 +1,10 @@
+; Presenting objects from to external programs
 GLOBAL k_printstr
-GLOBAL curProc
+GLOBAL go
+; Pulling from objects from external programs
 EXTERN dequeue
+
+GLOBAL curProc ; pointer to current running process
 
 k_printstr:
     push ebp
@@ -36,7 +40,15 @@ k_printstr:
         ret
 
 go:
-
+    push ebp
+    mov ebp, esp
+    pushf
+    ;pushes the point on stack with the queue back onto the stack so the call works 
+    push [ebp+8]
+    call dequeue
+    ; putting the return into the global variable
+    mov curProc, eax ; call, I think, puts the return into eax
+    jmp go_rest
 
 go_rest:
 
