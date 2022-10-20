@@ -4,6 +4,16 @@
 
 #include <stdint.h>
 
+// structs
+
+// Node; process control block
+struct pcb_t {
+
+};
+// Queue
+struct pcbq_t {
+};
+
 // Dr. Roger's code
 void run_test();
 void buddy_init();
@@ -19,15 +29,6 @@ pcb_t *dequeue(pcbq_t *q);
 
 int create_process(uint32_t code_address);
 
-// structs
-
-// Node; process control block
-struct pcb_t {
-
-}
-// Queue
-struct pcbq_t {
-}
 
 int main(){
     buddy_init();
