@@ -5,20 +5,20 @@
 #include <stdint.h>
 
 // global variables
-uint32_t pid=0;
+uint32_t pid;
 
 // Dr. Roger's code
 void run_test();
 void buddy_init();
 void *kmalloc(uint32_t);
-void convert_num(uint32_t, char*);
+int convert_num(unsigned int, char*);
 
 // queue structs
 // Node; process control block
 typedef struct {
     // Data
     uint32_t pid;
-    uint32_t esp;
+    uint32_t *esp;
     struct pcb_t *next;
     struct pcb_t *prev;
 } pcb_t;
@@ -26,8 +26,9 @@ typedef struct {
 typedef struct {
     pcb_t *start;
     pcb_t *end;
-    
 } pcbq_t;
+// Declaration
+pcbq_t readyQueue;
 
 // queue prototypes
 void enqueue(pcbq_t *q, pcb_t *pcb);
@@ -37,7 +38,6 @@ pcb_t *dequeue(pcbq_t *q);
 void k_printstr(char *string, int row, int col);
 void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
-
 
 // process prototypes
 int create_process(uint32_t code_address);
@@ -86,28 +86,33 @@ int create_process(uint32_t code_address){
     if (stackptr == 0)
         return -1;
 
-
-    uint32_t *st = stackptr+1024; // I want st to be a stored pointer of the malloc
+    uint32_t *st = stackptr+1024;
 
     st--; // Moving the mem location down 1
     uint32_t eflags = 0;
-    *st = eflags; // Setting current mem location to eflags (0)
+    *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
     uint32_t cs = 0;
-    *st = cs;
+    *st = cs; // code segment register
 
     st--;
     *st = code_address;
+
     st--;
     uint32_t dispatch_leave = 0;
     *st = dispatch_leave;
 
+    // Setting registers to be 0
     for (int i = 0; i < 8; i++){
         st--;
         *st = 0;
     }
 
+    pid++;
+    pcb_t *node = kmalloc(sizeof(pcb_t));
+    node -> esp = st;
+    node -> pid = pid;
 
     return 0;
 }
