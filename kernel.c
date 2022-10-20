@@ -69,7 +69,7 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
 
 
 int create_process(uint32_t code_address){
-    uint32_t *stackptr = k_malloc(1024);
+    uint32_t *stackptr = kmalloc(1024);
 
     uint32_t *st = stackptr+1024;
 
