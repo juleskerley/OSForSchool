@@ -7,33 +7,35 @@
 // global variables
 uint32_t pid=0;
 
-// structs
-
-// Node; process control block
-struct pcb_t {
-    // Data
-
-    struct pcb_t *next;
-};
-// Queue for above node
-struct pcbq_t {
-    struct pcb_t *start;
-    struct pcb_t *end;
-
-};
-
 // Dr. Roger's code
 void run_test();
 void buddy_init();
+
+// queue structs
+// Node; process control block
+typedef struct {
+    // Data
+    uint32_t pid;
+    uint32_t esp;
+    pcb_t *next;
+    pcb_t *prev;
+} pcb_t;
+// Queue for above node
+typedef struct {
+    pcb_t *start;
+    pcb_t *end;
+    
+} pcbq_t;
+
+// queue prototypes
+void enqueue(pcbq_t *q, pcb_t *pcb);
+pcb_t *dequeue(struct pcbq_t *q);
 
 // text prototypes
 void k_printstr(char *string, int row, int col);
 void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
 
-// queue prototypes
-void enqueue(struct pcbq_t *q, struct pcb_t *pcb);
-struct pcb_t *dequeue(struct pcbq_t *q);
 
 // process prototypes
 int create_process(uint32_t code_address);
