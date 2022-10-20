@@ -17,8 +17,8 @@ typedef struct {
     // Data
     uint32_t pid;
     uint32_t esp;
-    pcb_t *next;
-    pcb_t *prev;
+    struct pcb_t *next;
+    struct pcb_t *prev;
 } pcb_t;
 // Queue for above node
 typedef struct {
