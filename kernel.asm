@@ -37,10 +37,15 @@ k_printstr:
 
 go:
 
+
 go_rest:
 
 dispatch:
+    jmp yield
 
-dispatch_leave:
+dispatch_leave: ; iret usage implies this is for interrupts so that might be a phase 2 thing?
+    iret
 
 yield:
+
+    ret
