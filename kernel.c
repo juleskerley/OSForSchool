@@ -29,7 +29,7 @@ typedef struct {
 
 // queue prototypes
 void enqueue(pcbq_t *q, pcb_t *pcb);
-pcb_t *dequeue(struct pcbq_t *q);
+pcb_t *dequeue(pcbq_t *q);
 
 // text prototypes
 void k_printstr(char *string, int row, int col);
