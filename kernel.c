@@ -68,7 +68,18 @@ void enqueue(pcbq_t *q, pcb_t *pcb){
     }
 }
 
-
+pcb_t *dequeue(pcbq_t *q){
+    pcb_t temp;
+    temp = q->front;
+    if (q->front == q->end){
+        q->front = 0;
+        q->end = 0;
+        return temp;
+    }
+    q->front->prev = pcbq_t->front;
+    pcbq_t->front->next = 0;
+    return temp;
+}
 
 void k_clearscr(){
     for (int i = 0; i < 25; i++)
