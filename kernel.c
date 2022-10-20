@@ -2,7 +2,7 @@
    This program simply runs creates clears the screen, sets a border, and
    does the designated tests */
 
-#include <sddint.h>
+#include <stdint.h>
 
 // Dr. Roger's code
 void run_test();
