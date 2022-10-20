@@ -1,21 +1,35 @@
+/* Avery Kerley
+   This program simply runs creates clears the screen, sets a border, and
+   does the designated tests */
+
 #include <sddint.h>
 
+// Dr. Roger's code
 void run_test();
 
+// prototypes
 void k_printstr(char *string, int row, int col);
 void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
+
 
 void enqueue(pcbq_t *q, pcb_t *pcb);
 pcb_t *dequeue(pcbq_t *q);
 
 int create_process(uint32_t code_address);
 
-/* Avery Kerley
-   This program simply runs creates clears the screen, sets a border, and
-   does the designated tests */
+// structs
+
+// Node; process control block
+struct pcb_t {
+
+}
+// Queue
+struct pcbq_t {
+}
 
 int main(){
+    buddy_init()
     k_clearscr();
     k_printstr("Running Processes", 0, 0);
     while(1){} // This keeps the screen from flickering
@@ -49,4 +63,24 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
 }
 
 
+int create_process(uint32_t code_address){
+    uint32_t *stackptr = k_malloc(1024);
 
+    uint32_t *st = stackptr+1024;
+
+    *st--; // Moving the mem location down 1
+    uint32_t eflags = 0;
+    st = eflags; // Setting current mem location to eflags (0)
+
+    *st--;
+    uint32_t cs;
+    st = cs;
+
+    st--;
+    st = code_address;
+
+    st--;
+    uint32_t dispatch_leave;
+    st = dispatch_leave;
+
+}
