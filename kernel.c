@@ -37,14 +37,16 @@ struct pcb_t *dequeue(struct pcbq_t *q);
 
 // process prototypes
 int create_process(uint32_t code_address);
-void p1()
-void p2()
+void p1();
+void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
 
 int main(){
     buddy_init();
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes", 1, 1);
+    p1()
+    p2()
     create_process(0);
     while(1){} // This keeps the screen from flickering
     return 0;
