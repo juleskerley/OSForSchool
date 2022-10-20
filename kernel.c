@@ -114,7 +114,7 @@ void p1(){
     int num = 0;
     k_printstr("value: ", 12, 11);
     while (1){
-    	char* numStr = conver_num(num);
+    	char* numStr = convert_num(num);
 	k_printstr(numStr, 12, 18);
 	num++;
 	if(num > 1000)
