@@ -44,9 +44,12 @@ void k_clearscr(){
 }
 
 void print_border(int start_row, int start_col, int end_row, int end_col){
-    // Required for the usage; also prevents end + from being overwritten
+    // Required for the usage: Makes the values 'human-readable' (1 indexed)
+    // also prevents end + from being overwritten
     end_row--;
     end_col--;
+    start_row--;
+    start_col--;
 
     k_printstr("+", start_row, start_col);
     k_printstr("+", start_row, end_col);
