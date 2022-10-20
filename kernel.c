@@ -43,7 +43,7 @@ void print_border(int start_row, int start_col, int end_row, int end_col);
 int create_process(uint32_t code_address);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
-void go(pcbq_ *q);
+void go(pcbq_t *q);
 
 
 int main(){
