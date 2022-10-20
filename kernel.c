@@ -10,6 +10,8 @@ uint32_t pid=0;
 // Dr. Roger's code
 void run_test();
 void buddy_init();
+void *kmalloc(uint32_t);
+void convert_num(uint32_t, char*);
 
 // queue structs
 // Node; process control block
