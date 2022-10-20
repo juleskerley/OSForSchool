@@ -18,8 +18,7 @@ struct pcb_t {
 // Queue for above node
 struct pcbq_t {
     struct pcb_t *start;
-    struct pcb_t *rear;
-
+    struct pcb_t *end;
 
 };
 
@@ -27,23 +26,26 @@ struct pcbq_t {
 void run_test();
 void buddy_init();
 
-// prototypes
+// text prototypes
 void k_printstr(char *string, int row, int col);
 void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
 
-
+// queue prototypes
 void enqueue(struct pcbq_t *q, struct pcb_t *pcb);
 struct pcb_t *dequeue(struct pcbq_t *q);
 
+// process prototypes
 int create_process(uint32_t code_address);
-
+void p1()
+void p2()
 
 int main(){
     buddy_init();
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes", 1, 1);
+    create_process(0);
     while(1){} // This keeps the screen from flickering
     return 0;
 }
@@ -72,35 +74,79 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
     }
 }
 
-
 int create_process(uint32_t code_address){
-    uint32_t *stackptr = kmalloc(1024);
-    if (stackptr == nullptr)
+    uint32_t *stackptr = kmalloc(1024*sizeof(uint32_t));
+
+    if (stackptr == 0)
         return -1;
 
-    uint32_t *st = stackptr+1024;
 
-    *st--; // Moving the mem location down 1
+    uint32_t *st = stackptr+1024; // I want st to be a stored pointer of the malloc
+
+    st--; // Moving the mem location down 1
     uint32_t eflags = 0;
-    st = eflags; // Setting current mem location to eflags (0)
+    *st = eflags; // Setting current mem location to eflags (0)
 
-    *st--;
+    st--;
     uint32_t cs = 0;
-    st = cs;
+    *st = cs;
 
-    *st--;
-    uint32_t code_address = 0;
-    st = cs;
-
-    *st--;
+    st--;
+    *st = code_address;
+    st--;
     uint32_t dispatch_leave = 0;
-    st = dispatch_leave;
+    *st = dispatch_leave;
 
     for (int i = 0; i < 8; i++){
-        *st--;
-        st = 0;
+        st--;
+        *st = 0;
     }
 
 
     return 0;
 }
+
+void p1(){
+    print_border(11,11,14,36);
+
+
+
+
+
+
+
+
+}
+
+void p2(){
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
