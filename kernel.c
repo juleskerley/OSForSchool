@@ -122,20 +122,19 @@ void p1(){
 }
 
 void p2(){
-
-
-
-
-
-
-
-
-
+    print_border(15, 10, 18, 35);
+    k_printstr("Process 1 running...", 16, 11);
+    int num = 0;
+    k_printstr("value: ", 17, 11);
+    while (1){
+    	char* numStr = conver_num(num);
+	k_printstr(numStr, 17, 18);
+	num++;
+	if(num > 1000)
+	    num = 0;
+	    k_printstr("   ", 17, 19); // To get rid of the extra numbers
+    }
 }
-
-
-
-
 
 
 
