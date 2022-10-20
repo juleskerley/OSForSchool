@@ -56,6 +56,20 @@ int main(){
     return 0;
 }
 
+void enqueue(pcbq_t *q, pcb_t *pcb){
+    if (q->end == 0){
+        q->front = pcb;
+        q->end = pcb;
+    }
+    else{
+        pcb -> next = q -> end;
+        q->end->prev = pcb;
+        q->end = pcb;
+    }
+}
+
+
+
 void k_clearscr(){
     for (int i = 0; i < 25; i++)
         for (int j = 0; j < 80; j++)
@@ -110,9 +124,9 @@ int create_process(uint32_t code_address){
     }
 
     pid++;
-    pcb_t *node = kmalloc(sizeof(pcb_t));
-    node -> esp = st;
-    node -> pid = pid;
+    pcb_t *pcb = kmalloc(sizeof(pcb_t));
+    node->esp = st;
+    node->pid = pid;
 
     return 0;
 }
