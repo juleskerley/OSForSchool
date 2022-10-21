@@ -211,6 +211,7 @@ entry->access = access;
 entry->code_selector = code_selector;
 entry->offsetlow = handler & 0xFFFF;
 entry->offsethigh = handler >> 16;
+entry->always0 = 0;
 }
 void init_idt(){
 
