@@ -43,7 +43,7 @@ void print_border(int start_row, int start_col, int end_row, int end_col);
 int create_process(uint32_t code_address);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
-void go(pcbq_t *q);
+void go();
 
 
 int main(){
@@ -58,7 +58,7 @@ int main(){
         k_printstr("An Error has occured with process 2",3,1);
         while(1){} // Keeps the code from proceeding in the event of an error
     }
-    go(&readyQueue);
+    go();
     while(1){} // This keeps the screen from flickering
     return 0;
 }

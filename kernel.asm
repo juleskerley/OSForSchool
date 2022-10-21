@@ -49,7 +49,7 @@ go:
     pusha ; Maybe supposed to be pushad?
     pushf
     ;pushes the point on stack with the queue back onto the stack so the call works 
-    push DWORD [ebp+8]
+    push readyQueue
     call dequeue
     add esp, 4 ; cleans the stack of that pushed address
     ; putting the return into the global variable
@@ -77,5 +77,8 @@ dispatch_leave:
 yield:
     pusha
     push [curProc+4]
-    
+    push curProc
+    push readyQueue
+    call enqueue
+       
     ret
