@@ -72,6 +72,7 @@ dispatch_leave:
 
 yield:
     pusha
+    pushf
     mov eax, [curProc]
     push DWORD BYTE [eax+4]
     push curProc
@@ -79,5 +80,7 @@ yield:
     call enqueue
     call dequeue ; This takes advantage of the fact that readyQueue is the first thing on the stack
     ; I do not have to push it back into the stack
-    add esp, 8
+    add esp, 12 
+    mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
+    mov eax, [curProc] ; This is not needed here but I will do it every time
     jmp go_rest
