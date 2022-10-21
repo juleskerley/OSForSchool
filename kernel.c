@@ -53,7 +53,8 @@ int main(){
     k_printstr("Running Processes", 1, 1);
     //p1();
     //p2();
-    if (create_process(p1) == -1 || create_process(p2) == -1){
+    if (create_process((uint32_t)&p1) == -1 || 
+        create_process((uint32_t)&p2) == -1){
         k_printstr("An Error has occured with process 2",3,1);
         while(1){} // Keeps the code from proceeding in the event of an error
     }
