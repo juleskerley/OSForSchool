@@ -136,6 +136,7 @@ int create_process(uint32_t code_address){
     *st = dispatch_leave;
 
     // Setting registers to be 0
+    // pop
     for (int i = 0; i < 8; i++){
         st--;
         *st = 0;
