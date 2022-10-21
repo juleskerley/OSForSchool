@@ -173,7 +173,7 @@ void p1(){
 
 void p2(){
     print_border(15, 10, 18, 35);
-    k_printstr("Process 1 running...", 16, 11);
+    k_printstr("Process 2 running...", 16, 11);
     uint32_t num = 0;
     k_printstr("value: ", 17, 11);
     while (1){
