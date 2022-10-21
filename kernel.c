@@ -83,7 +83,7 @@ pcb_t *dequeue(pcbq_t *q){
         q->end = 0;
         return temp;
     }
-    q->front->prev = q->front;
+    q->front = q->front->prev;
     q->front->next = 0;
     return temp;
 }
