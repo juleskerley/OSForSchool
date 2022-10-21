@@ -51,10 +51,13 @@ int main(){
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes", 1, 1);
-    go(&readyQueue);
     //p1();
     //p2();
-    create_process(0);
+    if (create_process(p1) == -1 || create_process(p2) == -1){
+        k_printstr("An Error has occured with process 2",3,1);
+        while(1){} // Keeps the code from proceeding in the event of an error
+    }
+    go(&readyQueue);
     while(1){} // This keeps the screen from flickering
     return 0;
 }
