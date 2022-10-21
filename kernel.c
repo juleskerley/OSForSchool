@@ -20,13 +20,13 @@ uint16_t code_selector;
 uint8_t always0; 
 uint8_t access;
 uint16_t highoffset;
-} __attribute__((packed))
+} __attribute__((packed));
 typedef struct idt_entry idt_entry_t;
 void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access);
 void init_idt();
 idt_entry_t idt[256];
 
-struct idtr {
+struct idtr_struct {
     uint16_t limit;
     uint32_t base;
 } __attribute__((packed));
@@ -62,8 +62,8 @@ int create_process(uint32_t code_address);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
 void go();
-void dispatcher();
-
+void dispatch();
+void lidtr(struct idtr_struct*);
 
 int main(){
     buddy_init();
@@ -72,6 +72,7 @@ int main(){
     k_printstr("Running Processes", 1, 1);
     //p1();
     //p2();
+    init_idt();
     if (create_process((uint32_t)&p1) == -1 || 
         create_process((uint32_t)&p2) == -1){
         k_printstr("An Error has occured with process 2",3,1);
@@ -185,9 +186,7 @@ void p1(){
 	    num = 0;
 	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
         }
-        asm("push $0\n\t"
-            "push $16\n\t"
-            "call dispatch");
+        asm("int $32");
     }
 }
 
@@ -205,9 +204,7 @@ void p2(){
 	    num = 0;
 	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
         }
-        asm("push $0\n\t"
-            "push $16\n\t"
-            "call dispatch");
+        asm("int $32");
     }
 }
 
@@ -219,20 +216,20 @@ void error(){
 void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access){
 entry->access = access;
 entry->code_selector = code_selector;
-entry->offsetlow = handler & 0xFFFF;
-entry->offsethigh = handler >> 16;
+entry->lowoffset = addr_of_handler & 0xFFFF;
+entry->highoffset = addr_of_handler >> 16;
 entry->always0 = 0;
 }
 void init_idt(){
-    for (i = 0; i < 32; i++){
+    for (int i = 0; i < 32; i++){
         init_idt_entry(&idt[i], (uint32_t)&error, 16, 0x8e);
     }
-    init_idt_entry(&idt[32], (uint32_t)&dispatcher,16,0x8e);
-    for (i = 33; i < 256; i++){
+    init_idt_entry(&idt[32], (uint32_t)&dispatch,16,0x8e);
+    for (int i = 33; i < 256; i++){
         init_idt_entry(&idt[i],0,0,0);
     }
-    idtr idtr;
-    idtr->limit = sizeof(idt)-1
-    idtr->base = (uint32_t)idt
+    struct idtr_struct idtr;
+    idtr.limit = sizeof(idt)-1;
+    idtr.base = (uint32_t)idt;
     lidtr(&idtr);
 }

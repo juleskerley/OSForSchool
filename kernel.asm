@@ -2,6 +2,7 @@
 GLOBAL k_printstr
 GLOBAL go
 GLOBAL dispatch
+GLOBAL lidtr
 ; Pulling from objects from external programs
 EXTERN dequeue
 EXTERN enqueue
@@ -84,3 +85,13 @@ yield:
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
     mov eax, [curProc] ; This is not needed here but I will do it every time
     jmp go_rest
+
+lidtr:
+    push ebp
+    mov ebp, esp
+    push eax
+    mov eax, [ebp+8]
+    lidt [eax]
+    pop eax
+    pop ebp
+    ret
