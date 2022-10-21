@@ -64,7 +64,7 @@ go_rest:
     ret
 
 dispatch:
-    jmp yield
+    call yield
 
 dispatch_leave: 
 ; iret usage implies this is for interrupts so that might be a phase 2 thing?
