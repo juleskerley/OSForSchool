@@ -50,14 +50,15 @@ go:
     add esp, 4 ; cleans the stack of that pushed address
     ; putting the return into the global variable
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
+    mov eax, [curProc] ; This is not needed here but I will do it every time
     ; don't need to put a jmp, it'll fall to go_rest
     ; I think this is working!!
 
 go_rest:
     ; so future me, this isn't correct, but accessing the struct might be like
-    mov esp, DWORD BYTE [curProc+4] ; Because this is the second entry in the struct
+    mov esp, DWORD BYTE [eax+4] ; Because this is the second entry in the struct
     ; and the first two struct values are uint32_t (which are == in size to dw
-    ; I think this is actually 4?
+    ; therefore it is 4
     popf
     popa
     ret
@@ -71,7 +72,8 @@ dispatch_leave:
 
 yield:
     pusha
-    push DWORD BYTE [curProc+4]
+    mov eax, [curProc]
+    push DWORD BYTE [eax+4]
     push curProc
     push readyQueue
     call enqueue
