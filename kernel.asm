@@ -76,9 +76,11 @@ dispatch_leave:
 
 yield:
     pusha
-    push [curProc+4]
+    push DWORD BYTE [curProc+4]
     push curProc
     push readyQueue
     call enqueue
-       
-    ret
+    call dequeue ; This takes advantage of the fact that readyQueue is the first thing on the stack
+    ; I do not have to push it back into the stack
+    add esp, 8
+    jmp go_rest
