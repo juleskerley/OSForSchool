@@ -13,6 +13,19 @@ void buddy_init();
 void *kmalloc(uint32_t);
 int convert_num(unsigned int, char*);
 
+struct idt_entry {
+uint16_t lowoffset;
+uint16_t code_selector;
+uint8_t always0; 
+uint8_t access;
+uint16_t highoffset;
+} __attribute__((packed))
+typedef struct idt_entry idt_entry_t;
+void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access);
+void init_idt();
+idt_entry_t idt[256];
+
+
 // queue structs
 // Node; process control block
 typedef struct pcb_s{
@@ -193,18 +206,12 @@ void p2(){
 }
 
 
+void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access){
+entry->access = access;
+entry->code_selector = code_selector;
+entry->offsetlow = handler & 0xFFFF;
+entry->offsethigh = handler >> 16;
+}
+void init_idt(){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
