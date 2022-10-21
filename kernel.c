@@ -13,6 +13,7 @@ void buddy_init();
 void *kmalloc(uint32_t);
 int convert_num(unsigned int, char*);
 
+void err();
 struct idt_entry {
 uint16_t lowoffset;
 uint16_t code_selector;
@@ -25,6 +26,10 @@ void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_
 void init_idt();
 idt_entry_t idt[256];
 
+struct idtr {
+    uint16_t limit;
+    uint32_t base;
+} __attribute__((packed));
 
 // queue structs
 // Node; process control block
@@ -57,6 +62,7 @@ int create_process(uint32_t code_address);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
 void go();
+void dispatcher();
 
 
 int main(){
@@ -205,6 +211,10 @@ void p2(){
     }
 }
 
+void error(){
+    k_printstr("ERROR", 0, 2);
+    while(1){}
+}
 
 void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access){
 entry->access = access;
@@ -214,5 +224,15 @@ entry->offsethigh = handler >> 16;
 entry->always0 = 0;
 }
 void init_idt(){
-
+    for (i = 0; i < 32; i++){
+        init_idt_entry(&idt[i], (uint32_t)&error, 16, 0x8e);
+    }
+    init_idt_entry(&idt[32], (uint32_t)&dispatcher,16,0x8e);
+    for (i = 33; i < 256; i++){
+        init_idt_entry(&idt[i],0,0,0);
+    }
+    idtr idtr;
+    idtr->limit = sizeof(idt)-1
+    idtr->base = (uint32_t)idt
+    lidtr(&idtr);
 }
