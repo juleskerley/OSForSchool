@@ -1,6 +1,7 @@
 ; Presenting objects from to external programs
 GLOBAL k_printstr
 GLOBAL go
+GLOBAL dispatch
 ; Pulling from objects from external programs
 EXTERN dequeue
 EXTERN enqueue
