@@ -9,7 +9,7 @@ EXTERN enqueue
 EXTERN readyQueue
 
 GLOBAL curProc ; pointer to current running process
-curProc DW 0
+curProc dd 0
 
 k_printstr:
     push ebp
