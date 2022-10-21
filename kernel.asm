@@ -43,8 +43,8 @@ k_printstr:
 go:
     push ebp
     mov ebp, esp
+    pusha ; Maybe supposed to be pushad?
     pushf
-    push eax
     ;pushes the point on stack with the queue back onto the stack so the call works 
     push DWORD [ebp+8]
     call dequeue
@@ -56,6 +56,10 @@ go:
 go_rest:
     ; so future me, this isn't correct, but accessing the struct might be like
     mov [curProc+8], esp
+    popf
+    popa
+    pop ebp
+    ret
 
 dispatch:
     jmp yield
