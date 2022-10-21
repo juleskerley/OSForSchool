@@ -165,6 +165,9 @@ void p1(){
 	    num = 0;
 	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
         }
+        asm("push $0\n\t"
+            "push $16\n\t"
+            "call dispatch");
     }
 }
 
@@ -182,6 +185,9 @@ void p2(){
 	    num = 0;
 	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
         }
+        asm("push $0\n\t"
+            "push $16\n\t"
+            "call dispatch");
     }
 }
 
