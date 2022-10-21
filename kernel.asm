@@ -55,7 +55,9 @@ go:
 
 go_rest:
     ; so future me, this isn't correct, but accessing the struct might be like
-    mov [curProc+8], esp
+    mov [curProc+4], esp ; Because this is the second entry in the struct
+    ; and the first two struct values are uint32_t (which are == in size to dw
+    ; I think this is actually 4?
     popf
     popa
     pop ebp
