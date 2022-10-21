@@ -3,6 +3,9 @@ GLOBAL k_printstr
 GLOBAL go
 ; Pulling from objects from external programs
 EXTERN dequeue
+EXTERN enqueue
+
+EXTERN readyQueue
 
 GLOBAL curProc ; pointer to current running process
 curProc DW 0
@@ -52,10 +55,11 @@ go:
     ; putting the return into the global variable
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
     ; don't need to put a jmp, it'll fall to go_rest
+    ; I think this is working!!
 
 go_rest:
     ; so future me, this isn't correct, but accessing the struct might be like
-    mov [curProc+4], esp ; Because this is the second entry in the struct
+    mov esp, [curProc+4] ; Because this is the second entry in the struct
     ; and the first two struct values are uint32_t (which are == in size to dw
     ; I think this is actually 4?
     popf
@@ -66,9 +70,12 @@ go_rest:
 dispatch:
     jmp yield
 
-dispatch_leave: ; iret usage implies this is for interrupts so that might be a phase 2 thing?
+dispatch_leave: 
+; iret usage implies this is for interrupts so that might be a phase 2 thing?
     iret
 
 yield:
-
+    pusha
+    push [curProc+4]
+    
     ret
