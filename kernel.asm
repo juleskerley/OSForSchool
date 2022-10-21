@@ -45,11 +45,6 @@ k_printstr:
         ret
 
 go:
-    push ebp
-    mov ebp, esp
-    pusha ; Maybe supposed to be pushad?
-    pushf
-    ;pushes the point on stack with the queue back onto the stack so the call works 
     push readyQueue
     call dequeue
     add esp, 4 ; cleans the stack of that pushed address
@@ -60,12 +55,11 @@ go:
 
 go_rest:
     ; so future me, this isn't correct, but accessing the struct might be like
-    mov esp, [curProc+4] ; Because this is the second entry in the struct
+    mov esp, DWORD BYTE [curProc+4] ; Because this is the second entry in the struct
     ; and the first two struct values are uint32_t (which are == in size to dw
     ; I think this is actually 4?
     popf
     popa
-    pop ebp
     ret
 
 dispatch:
