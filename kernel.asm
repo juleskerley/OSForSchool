@@ -2,6 +2,7 @@
 GLOBAL k_printstr
 GLOBAL go
 GLOBAL dispatch
+GLOBAL dispatch_leave
 GLOBAL lidtr
 ; Pulling from objects from external programs
 EXTERN dequeue
