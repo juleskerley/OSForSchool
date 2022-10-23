@@ -74,9 +74,9 @@ int main(){
     //p1();
     //p2();
     init_idt();
-    if (create_process((uint32_t)&p1) == -1 || 
+    if (create_process((uint32_t)&p1) == -1 ||
         create_process((uint32_t)&p2) == -1){
-        k_printstr("An Error has occured with process 2",3,1);
+        k_printstr("An Error has occured with process generation",3,1);
         while(1){} // Keeps the code from proceeding in the event of an error
     }
     go();
@@ -214,11 +214,11 @@ void error(){
 }
 
 void init_idt_entry(idt_entry_t *entry, uint32_t addr_of_handler, uint16_t code_selector, uint8_t access){
-entry->access = access;
-entry->code_selector = code_selector;
-entry->lowoffset = addr_of_handler & 0xFFFF;
-entry->highoffset = addr_of_handler >> 16;
-entry->always0 = 0;
+    entry->access = access;
+    entry->code_selector = code_selector;
+    entry->lowoffset = addr_of_handler & 0xFFFF;
+    entry->highoffset = addr_of_handler >> 16;
+    entry->always0 = 0;
 }
 void init_idt(){
     for (int i = 0; i < 32; i++){
