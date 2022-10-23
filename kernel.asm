@@ -54,10 +54,8 @@ go:
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
     mov eax, [curProc] ; This is not needed here but I will do it every time
     ; don't need to put a jmp, it'll fall to go_rest
-    ; I think this is working!!
 
 go_rest:
-    ; so future me, this isn't correct, but accessing the struct might be like
     mov esp, DWORD BYTE [eax+4] ; Because this is the second entry in the struct
     ; and the first two struct values are uint32_t (which are == in size to dw
     ; therefore it is 4
