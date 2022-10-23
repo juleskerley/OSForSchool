@@ -13,11 +13,11 @@ void buddy_init();
 void *kmalloc(uint32_t);
 int convert_num(unsigned int, char*);
 
-void err();
+void error();
 struct idt_entry {
 uint16_t lowoffset;
 uint16_t code_selector;
-uint8_t always0; 
+uint8_t always0;
 uint8_t access;
 uint16_t highoffset;
 } __attribute__((packed));
@@ -146,7 +146,7 @@ int create_process(uint32_t code_address){
     *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
-    uint16_t cs = 0;
+    uint16_t cs = idt[32].code_selector;
     *st = cs; // code segment register
 
     st--;
