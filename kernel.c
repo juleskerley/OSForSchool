@@ -146,7 +146,7 @@ int create_process(uint32_t code_address){
     *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
-    uint16_t cs = idt[32].code_selector;
+    uint32_t cs = 16; // I'm assuming because the others were 16, this is too
     *st = cs; // code segment register
 
     st--;
