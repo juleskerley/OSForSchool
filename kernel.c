@@ -153,7 +153,7 @@ int create_process(uint32_t code_address){
     *st = code_address;
 
     st--;
-    *st = dispatch_leave;
+    *st = (uint32_t)&dispatch_leave;
 
     // Setting registers to be 0
     // pop
