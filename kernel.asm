@@ -61,20 +61,20 @@ go_rest:
     mov esp, DWORD BYTE [eax+4] ; Because this is the second entry in the struct
     ; and the first two struct values are uint32_t (which are == in size to dw
     ; therefore it is 4
-    popf
     popa
     ret
 
 dispatch:
     call yield
 
-dispatch_leave: 
-; iret usage implies this is for interrupts so that might be a phase 2 thing?
+dispatch_leave:
+    ; I genuinely assumed this would be a next assignment thing because
+    ; my code "worked" without it. The reality is that this is called by the
+    ; process when you don't do pushf and popf. I was skipping this code.
     iret
 
 yield:
     pusha
-    pushf
     mov eax, [curProc]
     mov [eax+4], esp
     push eax

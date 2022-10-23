@@ -146,7 +146,7 @@ int create_process(uint32_t code_address){
     *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
-    uint32_t cs = 0;
+    uint16_t cs = 0;
     *st = cs; // code segment register
 
     st--;
@@ -167,7 +167,7 @@ int create_process(uint32_t code_address){
     pcb_t *pcb = kmalloc(sizeof(pcb_t));
     pcb->esp = st;
     pcb->pid = pid;
-    enqueue(&readyQueue,pcb);    
+    enqueue(&readyQueue,pcb);
 
     return 0;
 }
