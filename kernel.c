@@ -63,6 +63,7 @@ void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
 void go();
 void dispatch();
+void dispatch_leave();
 void lidtr(struct idtr_struct*);
 
 int main(){
@@ -152,7 +153,6 @@ int create_process(uint32_t code_address){
     *st = code_address;
 
     st--;
-    uint32_t dispatch_leave = 0;
     *st = dispatch_leave;
 
     // Setting registers to be 0
