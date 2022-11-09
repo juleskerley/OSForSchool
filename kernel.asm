@@ -4,6 +4,8 @@ GLOBAL go
 GLOBAL dispatch
 GLOBAL dispatch_leave
 GLOBAL lidtr
+GLOBAL init_timer_dev
+GLOBAL outportb
 ; Pulling from objects from external programs
 EXTERN dequeue
 EXTERN enqueue
@@ -66,9 +68,6 @@ dispatch:
     call yield
 
 dispatch_leave:
-    ; I genuinely assumed this would be a next assignment thing because
-    ; my code "worked" without it. The reality is that this is called by the
-    ; process when you don't do pushf and popf. I was skipping this code.
     iret
 
 yield:
@@ -94,3 +93,39 @@ lidtr:
     pop eax
     pop ebp
     ret
+
+init_timer_dev:
+    ; Basic setup, step 1
+    push ebp
+    mov ebp, esp
+    push eax
+    push edx
+    ; move ms into value, step 2
+    mov edx, [ebp+8]
+    ; multiplying dx by 1193
+    mul dx, 1193
+    mov al, 0b00110110 ; 0x43 is the Write control word
+    out 0x43, al
+    ; 5) Load the LSB first then the MSB.
+    ; 0x40 = Load counter 0 with the following code: 
+    mov ax, dx
+    out 0x40, al ; LSB
+    xchg ah, al
+    out 0x40, al ; MSB
+    ; 6) clean up (pop ebp and other regs used) and return
+    pop edx
+    pop eax
+    pop ebp
+
+
+outportb:
+    push ebp
+    mov ebp, esp
+    push eax
+    push edx
+    mov dx, [ebp+8]
+    mov al, [ebp+10]
+    out dx, al
+    pop edx
+    pop eax
+    pop ebp
