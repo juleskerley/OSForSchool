@@ -66,6 +66,11 @@ void dispatch();
 void dispatch_leave();
 void lidtr(struct idtr_struct*);
 
+// Timer prototypes
+void setup_PIC();
+void init_time_dev(uint32_t time_interval);
+void outporb(uint16_t port, uint8_t value);
+
 int main(){
     buddy_init();
     k_clearscr();
@@ -73,7 +78,11 @@ int main(){
     k_printstr("Running Processes", 1, 1);
     //p1();
     //p2();
+    uint32_t time_interval;
+    time_interval = 50; // in ms
     init_idt();
+    init_time_dev(time_interval);
+    setup_PIC();
     if (create_process((uint32_t)&p1) == -1 ||
         create_process((uint32_t)&p2) == -1){
         k_printstr("An Error has occured with process generation",3,1);
@@ -142,7 +151,7 @@ int create_process(uint32_t code_address){
     uint32_t *st = stackptr+1024;
 
     st--; // Moving the mem location down 1
-    uint32_t eflags = 0;
+    uint32_t eflags = 0x200;
     *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
@@ -186,7 +195,6 @@ void p1(){
 	    num = 0;
 	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
         }
-        asm("int $32");
     }
 }
 
@@ -204,7 +212,6 @@ void p2(){
 	    num = 0;
 	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
         }
-        asm("int $32");
     }
 }
 
@@ -232,4 +239,24 @@ void init_idt(){
     idtr.limit = sizeof(idt)-1;
     idtr.base = (uint32_t)idt;
     lidtr(&idtr);
+}
+
+void setup_PIC() {
+    // set up cascading mode:
+    outportb(0x20, 0x11); // start 8259 master initialization
+    outportb(0xA0, 0x11); // start 8259 slave initialization
+    outportb(0x21, 0x20); // set master base interrupt vector (idt 32-38)
+    outportb(0xA1, 0x28); // set slave base interrupt vector (idt 39-45)
+    // Tell the master that he has a slave:
+    outportb(0x21, 0x04); // set cascade ...
+    outportb(0xA1, 0x02); // on IRQ2
+    // Enabled 8086 mode:
+    outportb(0x21, 0x01); // finish 8259 initialization
+    outportb(0xA1, 0x01);
+    // Reset the IRQ masks
+    outportb(0x21, 0x0);
+    outportb(0xA1, 0x0);
+    // Now, enable the clock IRQ only
+    outportb(0x21, 0xfe); // Turn on the clock IRQ
+    outportb(0xA1, 0xff); // Turn off all others
 }
