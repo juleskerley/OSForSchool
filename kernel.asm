@@ -68,6 +68,10 @@ dispatch:
     call yield
 
 dispatch_leave:
+    push eax
+    mov al, 0x20
+    out 0x20, al
+    pop eax
     iret
 
 yield:
@@ -101,9 +105,11 @@ init_timer_dev:
     push eax
     push edx
     ; move ms into value, step 2
-    mov edx, [ebp+8]
+    mov dx, [ebp+8]
     ; multiplying dx by 1193
-    mul dx, 1193
+    imul dx, dx, 1193
+
+    ; Dr. Rogers code:
     mov al, 0b00110110 ; 0x43 is the Write control word
     out 0x43, al
     ; 5) Load the LSB first then the MSB.
@@ -112,10 +118,11 @@ init_timer_dev:
     out 0x40, al ; LSB
     xchg ah, al
     out 0x40, al ; MSB
-    ; 6) clean up (pop ebp and other regs used) and return
+    ; 6) clean up (pop ebp and other regs used) and return, my code:
     pop edx
     pop eax
     pop ebp
+    ret
 
 
 outportb:
@@ -124,8 +131,9 @@ outportb:
     push eax
     push edx
     mov dx, [ebp+8]
-    mov al, [ebp+10]
+    mov al, [ebp+12]
     out dx, al
     pop edx
     pop eax
     pop ebp
+    ret
