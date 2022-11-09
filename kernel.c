@@ -68,8 +68,8 @@ void lidtr(struct idtr_struct*);
 
 // Timer prototypes
 void setup_PIC();
-void init_time_dev(uint32_t time_interval);
-void outporb(uint16_t port, uint8_t value);
+void init_timer_dev(uint32_t time_interval);
+void outportb(uint16_t port, uint8_t value);
 
 int main(){
     buddy_init();
@@ -81,7 +81,7 @@ int main(){
     uint32_t time_interval;
     time_interval = 50; // in ms
     init_idt();
-    init_time_dev(time_interval);
+    init_timer_dev(time_interval);
     setup_PIC();
     if (create_process((uint32_t)&p1) == -1 ||
         create_process((uint32_t)&p2) == -1){
@@ -152,6 +152,7 @@ int create_process(uint32_t code_address){
 
     st--; // Moving the mem location down 1
     uint32_t eflags = 0x200;
+    //uint32_t eflags = 0;
     *st = eflags; // Setting current mem location in stack to eflags(0)
 
     st--;
