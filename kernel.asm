@@ -7,10 +7,10 @@ GLOBAL lidtr
 GLOBAL init_timer_dev
 GLOBAL outportb
 ; Pulling from objects from external programs
-EXTERN dequeue
-EXTERN enqueue
+EXTERN dequeue_priority
+EXTERN enqueue_priority
 
-EXTERN readyQueue
+EXTERN lowPriorityQueue
 
 GLOBAL curProc ; pointer to current running process
 curProc dd 0
@@ -49,8 +49,8 @@ k_printstr:
         ret
 
 go:
-    push readyQueue
-    call dequeue
+    push lowPriorityQueue
+    call dequeue_priority
     add esp, 4 ; cleans the stack of that pushed address
     ; putting the return into the global variable
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
@@ -79,9 +79,9 @@ yield:
     mov eax, [curProc]
     mov [eax+4], esp
     push eax
-    push readyQueue
-    call enqueue
-    call dequeue ; This takes advantage of the fact that readyQueue is the first thing on the stack
+    push lowPriorityQueue
+    call enqueue_priority
+    call dequeue_priority ; This takes advantage of the fact that readyQueue is the first thing on the stack
     ; I do not have to push it back into the stack
     add esp, 8
     mov DWORD BYTE [curProc], eax ; call, I think, puts the return into eax
