@@ -37,6 +37,7 @@ typedef struct pcb_s{
     // Data
     uint32_t pid;
     uint32_t *esp;
+    uint32_t priority;
     struct pcb_s *next;
     struct pcb_s *prev;
 } pcb_t;
@@ -46,7 +47,10 @@ typedef struct {
     pcb_t *end;
 } pcbq_t;
 // Declaration
-pcbq_t readyQueue;
+pcbq_t highPriorityQueue;
+pcbq_t midPriorityQueue;
+pcbq_t lowPriorityQueue;
+
 
 // queue prototypes
 void enqueue(pcbq_t *q, pcb_t *pcb);
@@ -58,7 +62,7 @@ void k_clearscr();
 void print_border(int start_row, int start_col, int end_row, int end_col);
 
 // process prototypes
-int create_process(uint32_t code_address);
+int create_process(uint32_t code_address, uint32_t priority);
 void p1();
 void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
 void go();
@@ -83,14 +87,20 @@ int main(){
     init_idt();
     init_timer_dev(time_interval);
     setup_PIC();
-    if (create_process((uint32_t)&p1) == -1 ||
-        create_process((uint32_t)&p2) == -1){
+    if (create_process((uint32_t)&idle, 1 == -1 ||
+        create_process((uint32_t)&p1, 2) == -1 ||
+        create_process((uint32_t)&p2, 2) == -1 ||
+        create_process((uint32_t)&p3, 3) == -1){
         k_printstr("An Error has occured with process generation",3,1);
         while(1){} // Keeps the code from proceeding in the event of an error
     }
     go();
     while(1){} // This keeps the screen from flickering
     return 0;
+}
+
+void enqueue_priority(pcbq_t *q, pcb_t *pcb){
+
 }
 
 void enqueue(pcbq_t *q, pcb_t *pcb){
@@ -142,13 +152,16 @@ void print_border(int start_row, int start_col, int end_row, int end_col){
     }
 }
 
-int create_process(uint32_t code_address){
+int create_process(uint32_t code_address, uint32_t priority){
     uint32_t *stackptr = kmalloc(1024*sizeof(uint32_t));
 
     if (stackptr == 0)
         return -1;
 
     uint32_t *st = stackptr+1024;
+
+    st--;
+    *st = (uint32_t)&go;
 
     st--; // Moving the mem location down 1
     uint32_t eflags = 0x200;
@@ -177,9 +190,14 @@ int create_process(uint32_t code_address){
     pcb_t *pcb = kmalloc(sizeof(pcb_t));
     pcb->esp = st;
     pcb->pid = pid;
+    pcb->priority = priority;
     enqueue(&readyQueue,pcb);
 
     return 0;
+}
+
+void idle(){
+
 }
 
 void p1(){
@@ -215,6 +233,25 @@ void p2(){
         }
     }
 }
+
+void p3(){
+    print_border(15, 10, 18, 35);
+    k_printstr("Process 2 running...", 16, 11);
+    uint32_t num = 0;
+    k_printstr("value: ", 17, 11);
+    while (1){
+    	char numStr[5] = "";
+        convert_num(num, numStr);
+	k_printstr(numStr, 17, 18);
+	num++;
+	if(num > 1000){
+	    num = 0;
+	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
+        }
+    }
+}
+
+
 
 void error(){
     k_printstr("ERROR", 0, 2);
