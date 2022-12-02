@@ -63,8 +63,10 @@ void print_border(int start_row, int start_col, int end_row, int end_col);
 
 // process prototypes
 int create_process(uint32_t code_address, uint32_t priority);
+void idle();
 void p1();
-void p2(); //I'm going to chop myself up in the meat grinder if I miss another semicolon
+void p2();
+void p3();
 void go();
 void dispatch();
 void dispatch_leave();
@@ -100,10 +102,11 @@ int main(){
 }
 
 void enqueue_priority(pcbq_t *q, pcb_t *pcb){
+    if (pcb->priority == 3)
+        q = &highPriorityQueue;
+    else if (pcb->priority == 2)
+        q = &midPriorityQueue;
 
-}
-
-void enqueue(pcbq_t *q, pcb_t *pcb){
     if (q->end == 0){
         q->front = pcb;
         q->end = pcb;
@@ -115,7 +118,11 @@ void enqueue(pcbq_t *q, pcb_t *pcb){
     }
 }
 
-pcb_t *dequeue(pcbq_t *q){
+pcb_t *dequeue_priority(pcbq_t *q){
+    if (highPriorityQueue.front)
+        q = &highPriorityQueue
+    else if (midPriorityQueue.front)
+        q = &midPriorityQueue
     pcb_t *temp;
     temp = q->front;
     if (q->front == q->end){
@@ -191,7 +198,10 @@ int create_process(uint32_t code_address, uint32_t priority){
     pcb->esp = st;
     pcb->pid = pid;
     pcb->priority = priority;
-    enqueue(&readyQueue,pcb);
+
+    enqueue_priority(&lowPriorityQueue, pcb)
+
+    // enqueue(&readyQueue,pcb);
 
     return 0;
 }
