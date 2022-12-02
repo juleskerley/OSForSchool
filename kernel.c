@@ -3,6 +3,7 @@
    does the designated tests */
 
 #include <stdint.h>
+#include <limits.h>
 
 // global variables
 uint32_t pid;
@@ -89,7 +90,7 @@ int main(){
     init_idt();
     init_timer_dev(time_interval);
     setup_PIC();
-    if (create_process((uint32_t)&idle, 1 == -1 ||
+    if (create_process((uint32_t)&idle, 1) == -1 ||
         create_process((uint32_t)&p1, 2) == -1 ||
         create_process((uint32_t)&p2, 2) == -1 ||
         create_process((uint32_t)&p3, 3) == -1){
@@ -120,9 +121,9 @@ void enqueue_priority(pcbq_t *q, pcb_t *pcb){
 
 pcb_t *dequeue_priority(pcbq_t *q){
     if (highPriorityQueue.front)
-        q = &highPriorityQueue
+        q = &highPriorityQueue;
     else if (midPriorityQueue.front)
-        q = &midPriorityQueue
+        q = &midPriorityQueue;
     pcb_t *temp;
     temp = q->front;
     if (q->front == q->end){
@@ -199,7 +200,7 @@ int create_process(uint32_t code_address, uint32_t priority){
     pcb->pid = pid;
     pcb->priority = priority;
 
-    enqueue_priority(&lowPriorityQueue, pcb)
+    enqueue_priority(&lowPriorityQueue, pcb);
 
     // enqueue(&readyQueue,pcb);
 
@@ -207,7 +208,11 @@ int create_process(uint32_t code_address, uint32_t priority){
 }
 
 void idle(){
-
+    k_printstr("Process Idle running...", 25,1);
+    while(1){
+        k_printstr("asdfasdfasdf",24,1);
+        k_printstr("jkl;jkl;jkl;",24,1);
+    }
 }
 
 void p1(){
@@ -215,7 +220,8 @@ void p1(){
     k_printstr("Process 1 running...", 11, 11);
     uint32_t num = 0;
     k_printstr("value: ", 12, 11);
-    while (1){
+    int i = 10000;
+    while (i){
     	char numStr[5] = "";
         convert_num(num, numStr);
 	k_printstr(numStr, 12, 18);
@@ -223,6 +229,7 @@ void p1(){
 	if(num > 1000){
 	    num = 0;
 	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
+        i--;
         }
     }
 }
@@ -232,7 +239,8 @@ void p2(){
     k_printstr("Process 2 running...", 16, 11);
     uint32_t num = 0;
     k_printstr("value: ", 17, 11);
-    while (1){
+    int i = 10000;
+    while (i){
     	char numStr[5] = "";
         convert_num(num, numStr);
 	k_printstr(numStr, 17, 18);
@@ -240,23 +248,26 @@ void p2(){
 	if(num > 1000){
 	    num = 0;
 	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
+        i--;
         }
     }
 }
 
 void p3(){
-    print_border(15, 10, 18, 35);
-    k_printstr("Process 2 running...", 16, 11);
+    print_border(20, 10, 23, 35);
+    k_printstr("Process 3 running...", 21, 11);
     uint32_t num = 0;
-    k_printstr("value: ", 17, 11);
-    while (1){
+    k_printstr("value: ", 22, 11);
+    int i = 10000;
+    while (i){
     	char numStr[5] = "";
         convert_num(num, numStr);
-	k_printstr(numStr, 17, 18);
+	k_printstr(numStr, 22, 18);
 	num++;
 	if(num > 1000){
 	    num = 0;
-	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
+	    k_printstr("    ", 22, 18); // To get rid of the extra numbers
+        i--;
         }
     }
 }
