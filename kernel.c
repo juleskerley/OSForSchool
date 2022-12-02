@@ -83,8 +83,6 @@ int main(){
     k_clearscr();
     print_border(0,0,24,79);
     k_printstr("Running Processes...", 1, 1);
-    //p1();
-    //p2();
     uint32_t time_interval;
     time_interval = 50; // in ms
     init_idt();
@@ -216,58 +214,49 @@ void idle(){
 }
 
 void p1(){
-    print_border(10, 10, 13, 35);
-    k_printstr("Process 1 running...", 11, 11);
+    k_printstr("Process 1 running...", 5, 1);
     uint32_t num = 0;
-    k_printstr("value: ", 12, 11);
-    int i = 10000;
-    while (i){
+    k_printstr("value: ", 6, 1);
+    for(int i=0; i <= INT_MAX/100; i++){
     	char numStr[5] = "";
         convert_num(num, numStr);
-	k_printstr(numStr, 12, 18);
+	k_printstr(numStr, 6, 8);
 	num++;
-	if(num > 1000){
+	if(num > 9){
 	    num = 0;
-	    k_printstr("    ", 12, 18); // To get rid of the extra numbers
-        i--;
+	    // k_printstr(" ", 6, 8); // To get rid of the extra numbers
         }
     }
 }
 
 void p2(){
-    print_border(15, 10, 18, 35);
-    k_printstr("Process 2 running...", 16, 11);
+    k_printstr("Process 2 running...", 10, 1);
     uint32_t num = 0;
-    k_printstr("value: ", 17, 11);
-    int i = 10000;
-    while (i){
+    k_printstr("value: ", 11, 1);
+    for(int i=0; i <= INT_MAX/100; i++){
     	char numStr[5] = "";
         convert_num(num, numStr);
-	k_printstr(numStr, 17, 18);
+	k_printstr(numStr, 11, 8);
 	num++;
-	if(num > 1000){
+	if(num > 9){
 	    num = 0;
-	    k_printstr("    ", 17, 18); // To get rid of the extra numbers
-        i--;
+	    // k_printstr(" ", 11, 8); // To get rid of the extra numbers
         }
     }
 }
 
 void p3(){
-    print_border(20, 10, 23, 35);
-    k_printstr("Process 3 running...", 21, 11);
+    k_printstr("Process 3 running...", 15, 1);
     uint32_t num = 0;
-    k_printstr("value: ", 22, 11);
-    int i = 10000;
-    while (i){
+    k_printstr("value: ", 16, 1);
+    for(int i=0; i <= INT_MAX/100; i++){
     	char numStr[5] = "";
         convert_num(num, numStr);
-	k_printstr(numStr, 22, 18);
+	k_printstr(numStr, 16, 8);
 	num++;
-	if(num > 1000){
+	if(num > 9){
 	    num = 0;
-	    k_printstr("    ", 22, 18); // To get rid of the extra numbers
-        i--;
+	    // k_printstr("    ", 16, 8); // To get rid of the extra numbers
         }
     }
 }
