@@ -82,7 +82,7 @@ int main(){
     buddy_init();
     k_clearscr();
     print_border(0,0,24,79);
-    k_printstr("Running Processes", 1, 1);
+    k_printstr("Running Processes...", 1, 1);
     //p1();
     //p2();
     uint32_t time_interval;
@@ -208,10 +208,10 @@ int create_process(uint32_t code_address, uint32_t priority){
 }
 
 void idle(){
-    k_printstr("Process Idle running...", 25,1);
+    k_printstr("Process Idle running...", 24,1);
     while(1){
-        k_printstr("asdfasdfasdf",24,1);
-        k_printstr("jkl;jkl;jkl;",24,1);
+        k_printstr("/",24,24);
+        k_printstr("\\",24,24);
     }
 }
 
